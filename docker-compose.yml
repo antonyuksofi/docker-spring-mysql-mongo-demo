@@ -1,0 +1,39 @@
+version: '3'
+services:
+#  db:
+#    image: postgres:12.7-alpine
+#    container_name: postgres
+#    ports:
+#    - 5432:5432
+#    volumes:
+#    - ./pg_data:/var/lib/postgresql/data
+#    environment:
+#      POSRGRES_PASSWORD: mypass123
+#      POSTGRES_DB: docker_spring_demo
+#      PG_DATA: /var/lib/postgresql/data
+#    restart: always
+
+  mysql-db:
+    platform: linux/x86_64
+    image: mysql:8.0.25
+    container_name: mysql_server
+    ports:
+    - 3306:3306
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mysuperadminsecretpass321
+      MYSQL_DATABASE: springdockertestdb
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypass123
+
+
+  spring-app:
+    build: .
+    container_name: spring_app
+    ports:
+    - 8085:8090
+    environment:
+      POSTGRES_HOST: db
+    restart: always
+    depends_on:
+      - mysql-db
